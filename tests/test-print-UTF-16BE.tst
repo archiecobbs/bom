@@ -1,0 +1,5 @@
+FLAGS='--print UTF-16BE'
+STDIN=''
+STDOUT='\xfe\xff'
+STDERR=''
+EXITVAL='0'

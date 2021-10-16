@@ -1,0 +1,5 @@
+FLAGS='--list --print NONE'
+STDIN=''
+STDOUT=''
+STDERR='!USAGE!'
+EXITVAL='1'

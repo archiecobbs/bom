@@ -1,0 +1,5 @@
+FLAGS='--print UNKNOWN'
+STDIN=''
+STDOUT=''
+STDERR='bom: unknown BOM type "UNKNOWN"\n'
+EXITVAL='1'

@@ -1,0 +1,5 @@
+FLAGS='--strip'
+STDIN='\xef\xbb\xbftest123\xff456'
+STDOUT='test123\xff456'
+STDERR=''
+EXITVAL='0'

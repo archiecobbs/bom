@@ -1,0 +1,5 @@
+FLAGS='--print NONE'
+STDIN=''
+STDOUT=''
+STDERR=''
+EXITVAL='0'

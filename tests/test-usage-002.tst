@@ -1,0 +1,5 @@
+FLAGS='--strip --detect'
+STDIN=''
+STDOUT=''
+STDERR='!USAGE!'
+EXITVAL='1'

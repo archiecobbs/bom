@@ -1,0 +1,5 @@
+FLAGS='--print UTF-7'
+STDIN=''
+STDOUT='\x2b\x2f\x76'
+STDERR=''
+EXITVAL='0'

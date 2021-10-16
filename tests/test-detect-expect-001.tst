@@ -1,0 +1,5 @@
+FLAGS='--detect --expect UTF-8'
+STDIN='\xef\xbb\xbfblahblah'
+STDOUT='UTF-8\n'
+STDERR=''
+EXITVAL='0'

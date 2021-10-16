@@ -1,0 +1,5 @@
+FLAGS='--detect'
+STDIN='\xff'
+STDOUT='NONE\n'
+STDERR=''
+EXITVAL='0'

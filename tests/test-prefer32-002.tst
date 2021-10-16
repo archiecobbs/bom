@@ -1,0 +1,5 @@
+FLAGS='-d --prefer32'
+STDIN='\xff\xfe\x00\x00'
+STDOUT='UTF-32LE\n'
+STDERR=''
+EXITVAL='0'

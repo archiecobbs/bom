@@ -1,0 +1,5 @@
+FLAGS='--print NONE --help'
+STDIN=''
+STDOUT=''
+STDERR='!USAGE!'
+EXITVAL='1'

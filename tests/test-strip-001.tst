@@ -1,0 +1,5 @@
+FLAGS='--strip --utf8'
+STDIN='\xef\xbb\xbftest123\xff456'
+STDOUT=''
+STDERR='bom: invalid UTF-8 byte sequence at file offset 10\n'
+EXITVAL='3'

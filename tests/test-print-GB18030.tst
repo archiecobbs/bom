@@ -1,0 +1,5 @@
+FLAGS='--print GB18030'
+STDIN=''
+STDOUT='\x84\x31\x95\x33'
+STDERR=''
+EXITVAL='0'

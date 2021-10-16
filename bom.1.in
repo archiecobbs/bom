@@ -1,0 +1,184 @@
+.\"  -*- nroff -*-
+.\"
+.\" bom - Deals with Unicode byte order marks
+.\"
+.\" Copyright (C) 2021 Archie L. Cobbs. All rights reserved.
+.\"
+.\" Licensed under the Apache License, Version 2.0 (the "License");
+.\" you may not use this file except in compliance with the License.
+.\" You may obtain a copy of the License at
+.\"
+.\"     http://www.apache.org/licenses/LICENSE-2.0
+.\"
+.\" Unless required by applicable law or agreed to in writing, software
+.\" distributed under the License is distributed on an "AS IS" BASIS,
+.\" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+.\" See the License for the specific language governing permissions and
+.\" limitations under the License.
+.\"
+.Dd October 14, 2021
+.Dt BOM 1
+.Os
+.Sh NAME
+.Nm bom
+.Nd Decode Unicode byte order mark
+.Sh SYNOPSIS
+.Nm
+.Fl \-strip
+.Op Fl \-expect Ar types
+.Op Fl \-lenient
+.Op Fl \-prefer32
+.Op Fl \-utf8
+.Op Ar file
+.Nm
+.Fl \-detect
+.Op Fl \-expect Ar types
+.Op Fl \-prefer32
+.Op Ar file
+.Nm
+.Fl \-print Ar type
+.Nm
+.Fl \-list
+.Nm
+.Fl \-help
+.Nm
+.Fl \-version
+.Sh DESCRIPTION
+.Nm
+decodes, verifies, reports, and/or strips the byte order mark (BOM) at the start of the specified file, if any.
+.Pp
+When no
+.Ar file
+is specified, or when
+.Ar file
+is \-, read standard input.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl d , Fl \-detect
+Report the detected BOM type to standard output and then exit.
+.Pp
+See
+.Sx "SUPPORTED BOM TYPES"
+for possible values.
+.It Fl e , Fl \-expect Ar types
+Expect to find one of the specified BOM types, otherwise exit with an error.
+.Pp
+Multiple types may be specified, separated by commas.
+.Pp
+Specifying
+.Ar NONE
+is acceptable and matches when the file has no (supported) BOM.
+.It Fl h , Fl \-help
+Output command line usage help.
+.It Fl l , Fl \-lenient
+Silently ignore any illegal byte sequences encountered when converting the remainder of the file to UTF-8.
+.Pp
+Without this flag,
+.Nm
+will exit immediately with an error if an illegal byte sequence is encountered.
+.Pp
+This flag has no effect unless the
+.Fl \-utf8
+flag is given.
+.It Fl \-list
+List the supported BOM types and exit.
+.It Fl p , Fl \-print Ar type
+Output the byte sequence corresponding to the
+.Ar type
+byte order mark.
+.It Fl \-prefer32
+Used to disambiguate the byte sequence
+.Ar "FF FE 00 00" ,
+which can be either a
+.Ar UTF-32LE
+BOM or a
+.Ar UTF-16LE
+BOM followed by a NUL character.
+.Pp
+Without this flag,
+.Ar UTF-16LE
+is assumed; with this flag,
+.Ar UTF-32LE
+is assumed.
+.It Fl s , Fl \-strip
+Strip the BOM, if any, from the beginning of the file and output the remainder of the file.
+.It Fl u , Fl \-utf8
+Convert the remainder of the file to UTF-8, assuming the character encoding implied by the detected BOM.
+.Pp
+For files with no (supported) BOM, this flag has no effect and the remainder of the file is copied unmodified.
+.Pp
+For files with a UTF-8 BOM, the identity transformation is still applied, so (for example) illegal byte sequences will be detected.
+.It Fl v , Fl \-version
+Output program version and exit.
+.El
+.Sh SUPPORTED BOM TYPES
+The supported BOM types are:
+.Bl -tag -width Ds
+.It NONE
+No supported BOM was detected.
+.It UTF-7
+A UTF-7 BOM was detected.
+.It UTF-8
+A UTF-8 BOM was detected.
+.It UTF-16BE
+A UTF-16 (Big Endian) BOM was detected.
+.It UTF-16LE
+A UTF-16 (Little Endian) BOM was detected.
+.It UTF-32BE
+A UTF-32 (Big Endian) BOM was detected.
+.It UTF-32LE
+A UTF-32 (Little Endian) BOM was detected.
+.It GB18030
+A GB18030 (Chinese National Standard) BOM was detected.
+.El
+.Sh EXAMPLES
+.Pp
+To tell what kind of byte order mark a file has:
+.Bd -literal -offset indent
+$ bom --detect
+.Ed
+.Pp
+To normalize files with byte order marks into UTF-8, and pass other files through unchanged:
+.Bd -literal -offset indent
+$ bom --strip --utf8
+.Ed
+.Pp
+Same as previous example, but discard illegal byte sequences instead of generating an error:
+.Bd -literal -offset indent
+$ bom --strip --utf8 --lenient
+.Ed
+.Pp
+To verify a properly encoded UTF-8 or UTF-16 file with a byte-order-mark and output it as UTF-8:
+.Bd -literal -offset indent
+$ bom --strip --utf8 --expect UTF-8,UTF-16LE,UTF-16BE
+.Ed
+.Pp
+To just remove any byte order mark and get on with your life:
+.Bd -literal -offset indent
+$ bom --strip file
+.Ed
+.Sh RETURN VALUES
+.Nm
+exits with one of the following values:
+.Bl -tag -width Ds
+.It 0
+Success.
+.It 1
+A general error occurred.
+.It 2
+The
+.Fl \-expect
+flag was given but the detected BOM did not match.
+.It 3
+An illegal byte sequence was detected (and
+.Fl \-lenient
+was not specified).
+.El
+.Sh SEE ALSO
+.Xr iconv 1
+.Rs
+.%T "bom: Decode Unicode byte order mark"
+.%O https://github.com/archiecobbs/bom
+.Re
+.Sh AUTHOR
+.An Archie L. Cobbs Aq archie.cobbs@gmail.com

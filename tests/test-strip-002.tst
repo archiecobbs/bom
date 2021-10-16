@@ -1,0 +1,5 @@
+FLAGS='--strip --lenient --utf8'
+STDIN='\xef\xbb\xbftest123\xff456'
+STDOUT='test123456'
+STDERR=''
+EXITVAL='0'

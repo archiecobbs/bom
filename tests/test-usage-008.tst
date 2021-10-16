@@ -1,0 +1,5 @@
+FLAGS='--detect foo bar'
+STDIN=''
+STDOUT=''
+STDERR='!USAGE!'
+EXITVAL='1'
