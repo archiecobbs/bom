@@ -135,22 +135,22 @@ A GB18030 (Chinese National Standard) BOM was detected.
 .Pp
 To tell what kind of byte order mark a file has:
 .Bd -literal -offset indent
-$ bom --detect
+$ bom --detect file
 .Ed
 .Pp
 To normalize files with byte order marks into UTF-8, and pass other files through unchanged:
 .Bd -literal -offset indent
-$ bom --strip --utf8
+$ bom --strip --utf8 file
 .Ed
 .Pp
 Same as previous example, but discard illegal byte sequences instead of generating an error:
 .Bd -literal -offset indent
-$ bom --strip --utf8 --lenient
+$ bom --strip --utf8 --lenient file
 .Ed
 .Pp
 To verify a properly encoded UTF-8 or UTF-16 file with a byte-order-mark and output it as UTF-8:
 .Bd -literal -offset indent
-$ bom --strip --utf8 --expect UTF-8,UTF-16LE,UTF-16BE
+$ bom --strip --utf8 --expect UTF-8,UTF-16LE,UTF-16BE file
 .Ed
 .Pp
 To just remove any byte order mark and get on with your life:
