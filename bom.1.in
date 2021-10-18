@@ -180,5 +180,9 @@ was not specified).
 .%T "bom: Decode Unicode byte order mark"
 .%O https://github.com/archiecobbs/bom
 .Re
+.Rs
+.%T "Byte order mark (Wikipedia)"
+.%O https://en.wikipedia.org/wiki/Byte_order_mark
+.Re
 .Sh AUTHOR
 .An Archie L. Cobbs Aq archie.cobbs@gmail.com
