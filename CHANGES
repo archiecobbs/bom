@@ -1,3 +1,7 @@
+Version Next
+
+    - Fixed bug when multi-byte sequence crossed input buffer boundary
+
 Version 1.0.0 Released October 16, 2021
 
     - Initial release

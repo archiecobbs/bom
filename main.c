@@ -364,6 +364,7 @@ bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
         char *optr;
         size_t iremain;
         size_t oremain;
+        int eof = 0;
         size_t r;
 
         // Fill the input buffer
@@ -371,6 +372,7 @@ bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
             if ((nread = fread(ibuf + ilen, 1, sizeof(ibuf) - ilen, fp)) == 0) {
                 if (ferror(fp))
                     err(1, "read error");
+                eof = 1;
                 break;
             }
             ilen += nread;
@@ -404,8 +406,11 @@ bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
 #endif
             if (r == (size_t)-1) {
                 switch (errno) {
-                case EILSEQ:
-                case EINVAL:
+                case EINVAL:                    // incomplete multi-byte sequence at the end of the input buffer
+                    if (!done && !eof)
+                        break;
+                    // FALLTHROUGH
+                case EILSEQ:                    // an invalid byte sequence was detected
                     if (lenient) {
                         iptr += iremain;        // avoid an infinite loop on trailing partial multi-byte sequence
                         iremain = 0;
