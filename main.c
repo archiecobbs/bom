@@ -283,6 +283,44 @@ bom_detect(FILE *fp, long expect_types, int prefer32)
     printf("%s\n", bt->name);
 }
 
+#if DEBUG_ICONV_OPS
+
+#define BYTES_PER_ROW   20
+static void
+debug_buffer(const size_t base, const void *data, size_t len)
+{
+    size_t offset;
+    size_t i;
+
+    if (data == NULL) {
+        fprintf(stderr, "    NULL\n");
+        return;
+    }
+    for (offset = 0; offset < len; offset += BYTES_PER_ROW) {
+        fprintf(stderr, "%08d: ", (unsigned int)(base + offset));
+        for (i = 0; i < BYTES_PER_ROW; i++) {
+            const int val = offset + i < len ? *((const char *)data + offset + i) & 0xff : -1;
+            if (i == BYTES_PER_ROW / 2)
+                fprintf(stderr, " ");
+            if (val != -1)
+                fprintf(stderr, " %02x", val);
+            else
+                fprintf(stderr, "   ");
+        }
+        fprintf(stderr, "  ");
+        for (i = 0; i < BYTES_PER_ROW; i++) {
+            const int val = offset + i < len ? *((const char *)data + offset + i) & 0xff : -1;
+            if (val != -1)
+                fprintf(stderr, "%c", isprint(val) ? val : '.');
+            else
+                fprintf(stderr, " ");
+        }
+        fprintf(stderr, "\n");
+    }
+}
+
+#endif  /* DEBUG_ICONV_OPS */
+
 static void
 bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
 {
@@ -326,6 +364,7 @@ bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
         char *optr;
         size_t iremain;
         size_t oremain;
+        size_t r;
 
         // Fill the input buffer
         while (ilen < sizeof(ibuf)) {
@@ -348,7 +387,22 @@ bom_strip(FILE *fp, long expect_types, int lenient, int prefer32, int utf8)
 
         // Convert to UTF-8 or just pass through
         if (utf8) {
-            if (iconv(icd, !done ? &iptr : NULL, &iremain, &optr, &oremain) == (size_t)-1) {
+#if DEBUG_ICONV_OPS
+            fprintf(stderr, "->iconv@%d: ilen=%d\n", (int)offset, (int)ilen);
+            debug_buffer(offset, iptr, ilen);
+#endif
+            r = iconv(icd, !done ? &iptr : NULL, &iremain, &optr, &oremain);
+#if DEBUG_ICONV_OPS
+            {
+                const int errno_save = errno;
+
+                fprintf(stderr, "<-iconv@%d: r=%d errno=%d iptr@%d optr@%d\n",
+                  (int)offset, (int)r, errno, (int)(iptr - ibuf), (int)(optr - obuf));
+                debug_buffer(offset, obuf, optr - obuf);
+                errno = errno_save;
+            }
+#endif
+            if (r == (size_t)-1) {
                 switch (errno) {
                 case EILSEQ:
                 case EINVAL:
