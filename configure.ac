@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-AC_INIT([bom Deals with Unicode byte order marks], [1.0.0], [https://github.com/archiecobbs/bom/], [bom])
+AC_INIT([bom Deals with Unicode byte order marks], [1.0.1], [https://github.com/archiecobbs/bom/], [bom])
 AC_CONFIG_AUX_DIR(scripts)
 AM_INIT_AUTOMAKE
 dnl AM_MAINTAINER_MODE
