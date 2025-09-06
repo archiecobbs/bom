@@ -11,6 +11,10 @@ You can read more about byte order marks [here](https://en.wikipedia.org/wiki/By
   * `bom --print` Output the byte sequence corresponding to a byte order mark (useful for adding them to files)
   * `bom --list` List the supported byte order mark types
 
+To download the latest distribution file:
+
+  * [bom-1.0.1.tar.gz](https://archie-public.s3.amazonaws.com/bom/bom-1.0.1.tar.gz)
+
 Here is the man page:
 ```
 BOM(1)                      BSD General Commands Manual                      BOM(1)
